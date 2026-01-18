@@ -1,0 +1,6 @@
+{
+  "appId": "com.worktracker.app",
+  "appName": "工作打卡",
+  "webDir": ".",
+  "bundledWebRuntime": false
+}
