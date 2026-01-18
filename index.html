@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8B5CF6">
+    <meta name="description" content="工作打卡与加班记录应用">
+    <title>工作打卡</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <div class="icon-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h1>工作打卡</h1>
+                </div>
+                <button class="export-btn" id="exportBtn" title="导出数据">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 今日打卡卡片 -->
+            <section class="card punch-card">
+                <h2 class="card-title">今日打卡</h2>
+                <div class="today-date" id="todayDate"></div>
+
+                <div class="punch-form">
+                    <div class="form-group">
+                        <label class="label">工作状态</label>
+                        <div class="button-group">
+                            <button class="btn btn-option" data-status="work" id="workBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                上班
+                            </button>
+                            <button class="btn btn-option" data-status="rest" id="restBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                休息
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group overtime-group" id="overtimeGroup" style="display: none;">
+                        <label class="label">是否加班</label>
+                        <div class="button-group">
+                            <button class="btn btn-option" data-overtime="no" id="noOvertimeBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                不加班
+                            </button>
+                            <button class="btn btn-option" data-overtime="yes" id="yesOvertimeBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                加班
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group time-group" id="timeGroup" style="display: none;">
+                        <label class="label">加班结束时间</label>
+                        <input type="time" class="time-input" id="overtimeEnd" value="21:00">
+                    </div>
+
+                    <button class="btn btn-primary" id="submitBtn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        保存打卡记录
+                    </button>
+                </div>
+
+                <div class="today-status" id="todayStatus"></div>
+            </section>
+
+            <!-- 统计卡片 -->
+            <section class="card stats-card">
+                <h2 class="card-title">本月统计</h2>
+                <div class="stats-grid">
+                    <div class="stat-item stat-primary">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="workDays">0</div>
+                            <div class="stat-label">工作天数</div>
+                        </div>
+                    </div>
+                    <div class="stat-item stat-warning">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="overtimeDays">0</div>
+                            <div class="stat-label">加班天数</div>
+                        </div>
+                    </div>
+                    <div class="stat-item stat-info">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="avgOvertime">0</div>
+                            <div class="stat-label">平均加班时长</div>
+                        </div>
+                    </div>
+                    <div class="stat-item stat-success">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalOvertime">0h</div>
+                            <div class="stat-label">总加班时长</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 日历视图 -->
+            <section class="card calendar-card">
+                <div class="calendar-header">
+                    <button class="calendar-nav" id="prevMonth">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <h2 class="card-title" id="calendarTitle">2026年1月</h2>
+                    <button class="calendar-nav" id="nextMonth">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="calendar" id="calendar"></div>
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot work"></span>
+                        <span>上班</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot overtime"></span>
+                        <span>加班</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot rest"></span>
+                        <span>休息</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 最近记录 -->
+            <section class="card records-card">
+                <h2 class="card-title">最近记录</h2>
+                <div class="records-list" id="recordsList"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{
+    "name": "工作打卡",
+    "short_name": "打卡",
+    "description": "记录每日工作和加班情况的应用",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0F172A",
+    "theme_color": "#8B5CF6",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["productivity", "utilities"],
+    "lang": "zh-CN"
+}
