@@ -54,6 +54,12 @@ function initEventListeners() {
     // 日历导航
     document.getElementById('prevMonth').addEventListener('click', () => changeMonth(-1));
     document.getElementById('nextMonth').addEventListener('click', () => changeMonth(1));
+    document.getElementById('todayBtn').addEventListener('click', goToToday);
+    document.getElementById('yearSelect').addEventListener('change', onDateSelectChange);
+    document.getElementById('monthSelect').addEventListener('change', onDateSelectChange);
+
+    // 初始化年月选择器
+    initDateSelectors();
 }
 
 // 切换主题
@@ -427,6 +433,62 @@ function updateRecordsList() {
 // 切换月份
 function changeMonth(delta) {
     currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + delta, 1);
+    updateCalendar();
+    updateStats();
+    updateDateSelectors();
+}
+
+// 回到今天
+function goToToday() {
+    currentMonth = new Date();
+    updateCalendar();
+    updateStats();
+    updateDateSelectors();
+}
+
+// 初始化年月选择器
+function initDateSelectors() {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthSelect = document.getElementById('monthSelect');
+
+    // 生成年份选项（当前年份前后5年）
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = `${year}年`;
+        yearSelect.appendChild(option);
+    }
+
+    // 生成月份选项
+    for (let month = 1; month <= 12; month++) {
+        const option = document.createElement('option');
+        option.value = month;
+        option.textContent = `${month}月`;
+        monthSelect.appendChild(option);
+    }
+
+    updateDateSelectors();
+}
+
+// 更新年月选择器的值
+function updateDateSelectors() {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthSelect = document.getElementById('monthSelect');
+
+    yearSelect.value = currentMonth.getFullYear();
+    monthSelect.value = currentMonth.getMonth() + 1;
+}
+
+// 年月选择器变化时
+function onDateSelectChange() {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthSelect = document.getElementById('monthSelect');
+
+    const year = parseInt(yearSelect.value);
+    const month = parseInt(monthSelect.value) - 1;
+
+    currentMonth = new Date(year, month, 1);
     updateCalendar();
     updateStats();
 }
