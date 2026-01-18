@@ -193,24 +193,24 @@ function checkTodayRecord() {
 
 // 更新统计
 function updateStats() {
-    const now = new Date();
-    const currentMonthRecords = records.filter(r => {
+    // 使用currentMonth变量，这样统计会跟随日历月份变化
+    const monthRecords = records.filter(r => {
         const recordDate = new Date(r.date);
-        return recordDate.getMonth() === now.getMonth() &&
-            recordDate.getFullYear() === now.getFullYear();
+        return recordDate.getMonth() === currentMonth.getMonth() &&
+            recordDate.getFullYear() === currentMonth.getFullYear();
     });
 
     // 工作天数
-    const workDays = currentMonthRecords.filter(r => r.status === 'work').length;
+    const workDays = monthRecords.filter(r => r.status === 'work').length;
     document.getElementById('workDays').textContent = workDays;
 
     // 加班天数
-    const overtimeDays = currentMonthRecords.filter(r => r.overtime).length;
+    const overtimeDays = monthRecords.filter(r => r.overtime).length;
     document.getElementById('overtimeDays').textContent = overtimeDays;
 
     // 计算加班时长
     let totalOvertimeHours = 0;
-    currentMonthRecords.forEach(r => {
+    monthRecords.forEach(r => {
         if (r.overtime && r.overtimeEnd) {
             const [hours, minutes] = r.overtimeEnd.split(':').map(Number);
             const overtimeHours = hours - 18 + minutes / 60; // 假设下班时间是18:00
@@ -226,6 +226,23 @@ function updateStats() {
 
     // 总加班时长
     document.getElementById('totalOvertime').textContent = `${totalOvertimeHours.toFixed(1)}h`;
+
+    // 更新统计卡片标题显示当前查看的月份
+    updateStatsTitle();
+}
+
+// 更新统计卡片标题
+function updateStatsTitle() {
+    const now = new Date();
+    const isCurrentMonth = currentMonth.getMonth() === now.getMonth() &&
+        currentMonth.getFullYear() === now.getFullYear();
+
+    const statsTitle = document.querySelector('.stats-card .card-title');
+    if (isCurrentMonth) {
+        statsTitle.textContent = '本月统计';
+    } else {
+        statsTitle.textContent = `${currentMonth.getFullYear()}年${currentMonth.getMonth() + 1}月统计`;
+    }
 }
 
 // 更新日历
