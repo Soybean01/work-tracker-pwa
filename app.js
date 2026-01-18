@@ -227,7 +227,7 @@ function updateStats() {
     // 总加班时长
     document.getElementById('totalOvertime').textContent = `${totalOvertimeHours.toFixed(1)}h`;
 
-    // 更新统计卡片标题显示当前查看的月份
+    // 更新统计卡片标题，显示当前查看的是哪个月份
     updateStatsTitle();
 }
 
