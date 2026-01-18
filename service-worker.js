@@ -1,5 +1,5 @@
 // Service Worker版本 - 更新此版本号会清除旧缓存
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `work-tracker-${CACHE_VERSION}`;
 const urlsToCache = [
     './',
