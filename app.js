@@ -360,10 +360,15 @@ function createCalendarDay(day, otherMonth, date = null) {
                 dayEl.appendChild(infoEl);
             } else if (record.status === 'work') {
                 dayEl.classList.add('work');
-                const infoEl = document.createElement('div');
-                infoEl.className = 'calendar-day-info';
-                infoEl.textContent = '上班';
-                dayEl.appendChild(infoEl);
+                // 添加星星图标
+                const starEl = document.createElement('div');
+                starEl.className = 'star-icon';
+                starEl.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                `;
+                dayEl.appendChild(starEl);
             } else {
                 dayEl.classList.add('rest');
             }
