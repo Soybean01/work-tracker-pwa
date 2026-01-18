@@ -536,54 +536,54 @@ body {
 }
 
 .calendar-day.work {
-    background: linear-gradient(135deg, rgba(234, 179, 8, 0.25), rgba(202, 138, 4, 0.25));
-    border-color: rgba(234, 179, 8, 0.6);
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(202, 138, 4, 0.15));
+    border: 2.5px solid #EAB308;
+    border-radius: 0.375rem;
     position: relative;
+    box-shadow: 0 0 8px rgba(234, 179, 8, 0.3), inset 0 0 0 1px rgba(234, 179, 8, 0.2);
 }
 
 /* 白天模式的上班日期样式 */
 [data-theme="light"] .calendar-day.work {
-    background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(202, 138, 4, 0.15));
-    border-color: rgba(234, 179, 8, 0.5);
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.08), rgba(202, 138, 4, 0.08));
+    border-color: #CA8A04;
+    box-shadow: 0 0 6px rgba(202, 138, 4, 0.25), inset 0 0 0 1px rgba(202, 138, 4, 0.15);
 }
 
-/* 星星图标 */
-.star-icon {
+/* 小星星角标（右上角） */
+.star-badge {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 2rem;
-    height: 2rem;
+    top: 2px;
+    right: 2px;
+    width: 0.875rem;
+    height: 0.875rem;
     color: #EAB308;
-    opacity: 0.9;
-    animation: starPulse 2s ease-in-out infinite;
+    animation: starTwinkle 1.5s ease-in-out infinite;
 }
 
-.star-icon svg {
+.star-badge svg {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 2px 4px rgba(234, 179, 8, 0.5));
+    filter: drop-shadow(0 1px 2px rgba(234, 179, 8, 0.6));
 }
 
-/* 白天模式的星星 */
-[data-theme="light"] .star-icon {
+/* 白天模式的星星角标 */
+[data-theme="light"] .star-badge {
     color: #CA8A04;
-    opacity: 0.85;
 }
 
-/* 星星脉动动画 */
-@keyframes starPulse {
+/* 星星闪烁动画 */
+@keyframes starTwinkle {
 
     0%,
     100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.9;
+        opacity: 1;
+        transform: scale(1);
     }
 
     50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 1;
+        opacity: 0.7;
+        transform: scale(0.9);
     }
 }
 
