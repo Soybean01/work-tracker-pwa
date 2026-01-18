@@ -360,17 +360,15 @@ function createCalendarDay(day, otherMonth, date = null) {
                 dayEl.appendChild(infoEl);
             } else if (record.status === 'work') {
                 dayEl.classList.add('work');
-                // 添加小星星角标
-                const starBadge = document.createElement('div');
-                starBadge.className = 'star-badge';
-                starBadge.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                `;
-                dayEl.appendChild(starBadge);
             } else {
                 dayEl.classList.add('rest');
+            }
+
+            // 如果有便签，显示小点标记
+            if (record.notes && record.notes.trim()) {
+                const noteDot = document.createElement('div');
+                noteDot.className = 'note-indicator';
+                dayEl.appendChild(noteDot);
             }
         } else {
             // 功能 1：没有记录默认显示为休息
@@ -541,6 +539,7 @@ function editRecord(dateStr, existingRecord) {
     const status = existingRecord ? existingRecord.status : 'rest';
     const overtime = existingRecord ? existingRecord.overtime : false;
     const overtimeEnd = existingRecord && existingRecord.overtimeEnd ? existingRecord.overtimeEnd : '21:00';
+    const notes = existingRecord && existingRecord.notes ? existingRecord.notes : '';
 
     const dialog = document.createElement('div');
     dialog.className = 'edit-dialog';
@@ -549,7 +548,7 @@ function editRecord(dateStr, existingRecord) {
         <div class="dialog-content">
             <h3>编辑打卡记录</h3>
             <p class="dialog-date">${displayDate}</p>
-            
+
             <div class="dialog-group">
                 <label>工作状态</label>
                 <div class="button-group">
@@ -557,7 +556,7 @@ function editRecord(dateStr, existingRecord) {
                     <button class="btn btn-option ${status === 'rest' ? 'active' : ''}" data-status="rest">休息</button>
                 </div>
             </div>
-            
+
             <div class="dialog-group" id="dialogOvertimeGroup" style="display: ${status === 'work' ? 'block' : 'none'}">
                 <label>是否加班</label>
                 <div class="button-group">
@@ -565,12 +564,17 @@ function editRecord(dateStr, existingRecord) {
                     <button class="btn btn-option ${overtime ? 'active' : ''}" data-overtime="yes">加班</button>
                 </div>
             </div>
-            
+
             <div class="dialog-group" id="dialogTimeGroup" style="display: ${overtime ? 'block' : 'none'}">
                 <label>加班结束时间</label>
                 <input type="time" class="time-input" id="dialogOvertimeEnd" value="${overtimeEnd}">
             </div>
-            
+
+            <div class="dialog-group">
+                <label>便签 <span style="color: var(--text-tertiary); font-size: 0.75rem;">(选填)</span></label>
+                <textarea class="notes-input" id="dialogNotes" placeholder="记录一些额外信息...">${notes}</textarea>
+            </div>
+
             <div class="dialog-actions">
                 <button class="btn btn-secondary" onclick="this.closest('.edit-dialog').remove()">取消</button>
                 <button class="btn btn-primary" id="dialogSaveBtn">保存</button>
@@ -625,6 +629,7 @@ function editRecord(dateStr, existingRecord) {
             status: dialogStatus,
             overtime: dialogOvertime,
             overtimeEnd: dialogOvertime ? dialog.querySelector('#dialogOvertimeEnd').value : null,
+            notes: dialog.querySelector('#dialogNotes').value.trim(),
             timestamp: Date.now()
         };
 
